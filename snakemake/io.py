@@ -1260,10 +1260,11 @@ def expand(*args, **wildcards):
         filepattern: {
             k: v
             for k, v in wildcards.items()
-            if k in re.findall(r"{([^}\.[!:]+)", filepattern)
+            if True
         }
         for filepattern in filepatterns
     }
+
 
     def flatten(wildcards):
         for wildcard, values in wildcards.items():
