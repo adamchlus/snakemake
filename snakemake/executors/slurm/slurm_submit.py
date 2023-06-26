@@ -175,7 +175,12 @@ class SlurmExecutor(ClusterExecutor):
                 account = get_account()
                 if account:
                     logger.warning(f"Guessed SLURM account: {account}")
-                    self._fallback_account_arg = f" -A {account}"
+                    if account == '(null)':
+                        self._fallback_account_arg = (
+                            ""                )
+                    else:
+                        self._fallback_account_arg = f" -A {account}"
+
                 else:
                     logger.warning(
                         "Unable to guess SLURM account. Trying to proceed without."
