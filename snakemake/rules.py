@@ -3,16 +3,11 @@ __copyright__ = "Copyright 2022, Johannes Köster"
 __email__ = "johannes.koester@uni-due.de"
 __license__ = "MIT"
 
-import math
 import os
-import re
 import types
 import typing
 from snakemake.path_modifier import PATH_MODIFIER_FLAG
-import sys
-import inspect
 import collections
-from urllib.parse import urljoin
 from pathlib import Path
 from itertools import chain
 from functools import partial
@@ -25,9 +20,6 @@ except ImportError:  # python < 3.11
 from snakemake.io import (
     IOFile,
     _IOFile,
-    protected,
-    temp,
-    dynamic,
     Namedlist,
     AnnotatedString,
     contains_wildcard_constraints,
@@ -201,7 +193,7 @@ class Rule:
             # perform the partial expansion from f's string representation
             s = str(f).replace("{", "{{").replace("}", "}}")
             for key in wildcards.keys():
-                s = s.replace("{{{{{}}}}}".format(key), "{{{}}}".format(key))
+                s = s.replace(f"{{{{{key}}}}}", f"{{{key}}}")
             # build result
             anno_s = AnnotatedString(s)
             anno_s.flags = f.flags
@@ -920,7 +912,7 @@ class Rule:
             )
         except WildcardError as e:
             raise WildcardError(
-                "Wildcards in input files cannot be " "determined from output files:",
+                "Wildcards in input files cannot be determined from output files:",
                 str(e),
                 rule=self,
             )
@@ -1034,7 +1026,7 @@ class Rule:
             )
         except WildcardError as e:
             raise WildcardError(
-                "Wildcards in log files cannot be " "determined from output files:",
+                "Wildcards in log files cannot be determined from output files:",
                 str(e),
                 rule=self,
             )
@@ -1209,14 +1201,12 @@ class Rule:
             return False
         except sre_constants.error as ex:
             raise IOFileException(
-                "{} in wildcard statement".format(ex),
+                f"{ex} in wildcard statement",
                 snakefile=self.snakefile,
                 lineno=self.lineno,
             )
         except ValueError as ex:
-            raise IOFileException(
-                "{}".format(ex), snakefile=self.snakefile, lineno=self.lineno
-            )
+            raise IOFileException(f"{ex}", snakefile=self.snakefile, lineno=self.lineno)
 
     def get_wildcards(self, requested_output, wildcards_dict=None):
         """
