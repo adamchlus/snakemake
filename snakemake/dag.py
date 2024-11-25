@@ -1158,9 +1158,9 @@ class DAG(DAGExecutorInterface):
                             reason.params_changed = any(
                                 self.workflow.persistence.params_changed(job)
                             )
-                        if "input" in self.workflow.rerun_triggers:
-                            reason.input_changed = any(
-                                self.workflow.persistence.input_changed(job)
+                        # if "input" in self.workflow.rerun_triggers:
+                        #     reason.input_changed = any(
+                        #         self.workflow.persistence.input_changed(job)
                             )
                         if "code" in self.workflow.rerun_triggers:
                             reason.code_changed = any(
@@ -2568,7 +2568,7 @@ class DAG(DAGExecutorInterface):
 
     def warn_about_changes(self, quiet=False):
         if not quiet:
-            for change_type in ["code", "input", "params"]:
+            for change_type in ["code", "params"]: # removed "input"
                 changed = self.get_outputs_with_changes(
                     change_type, include_needrun=False
                 )
