@@ -1161,7 +1161,7 @@ class DAG(DAGExecutorInterface):
                         # if "input" in self.workflow.rerun_triggers:
                         #     reason.input_changed = any(
                         #         self.workflow.persistence.input_changed(job)
-                            )
+                            # )
                         if "code" in self.workflow.rerun_triggers:
                             reason.code_changed = any(
                                 job.outputs_older_than_script_or_notebook()
