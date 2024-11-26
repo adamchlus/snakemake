@@ -1135,12 +1135,14 @@ class DAG(DAGExecutorInterface):
                     # Input is updated if it is newer that the oldest output file
                     # and does not have the same checksum as the one previously recorded.
                     updated_input = [
-                        False           #  Was f
+                        f
                         for f in job.input
                         if f.exists
                         and f.is_newer(output_mintime_)
                         and not is_same_checksum(f, job)
                     ]
+
+                    updated_input = []
                     reason.updated_input.update(updated_input)
                 if not updated_input:
                     # check for other changes like parameters, set of input files, or code
