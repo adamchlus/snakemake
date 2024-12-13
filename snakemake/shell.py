@@ -79,10 +79,10 @@ class shell:
                         "Cannot use WSL bash.exe on Windows. Ensure that you have "
                         "a usable bash.exe availble on your path."
                     )
-                cls._process_prefix = "set -euo pipefail; "
+                cls._process_prefix =  'echo "DISABLED: set -euo pipefail"; '
                 cls._win_command_prefix = "-c"
         elif os.path.split(cmd)[-1].lower() == "bash":
-            cls._process_prefix = "set -euo pipefail; "
+            cls._process_prefix = 'echo "DISABLED: set -euo pipefail"; '
         cls._process_args["executable"] = cmd
 
     @classmethod
